@@ -1,2 +1,3 @@
 # objectDetection
-Object detection like a cars, peoples and bicyles with yolov8 and OpenCV
+
+Object detection - simple app to recognize cars, peoples and bicyles with yolov8 and OpenCV
