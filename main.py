@@ -1,6 +1,23 @@
 import cv2
 from ultralytics import YOLO
 
+import sys
+
+if len(sys.argv) == 2:
+    video = sys.argv[1]
+    brightness = 255
+elif len(sys.argv) == 3:
+    video = sys.argv[1]
+    if sys.argv[2] == "bright":
+        brightness = 400
+    elif sys.argv[2] == "normal":
+        brightness = 255
+    elif sys.argv[2] == "dark":
+        brightness = 150
+else:
+    video = "video.avi"
+    brightness = 255
+
 # Załaduj model YOLOv8
 model = YOLO('yolov8n.pt')
 
@@ -24,13 +41,13 @@ def draw_detections(image, detections):
         cv2.putText(image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, colors, 1)
 
 # Otwórz wideo
-video_path = 'video.avi'
-cap = cv2.VideoCapture(video_path)
+cap = cv2.VideoCapture(video)
 
 classes = ['car', 'person', 'truck', 'bicycle', 'bus']
 
 while cap.isOpened():
     ret, frame = cap.read()
+    frame = cv2.resize(frame, (960, 540))
     if not ret:
         break
       
@@ -53,6 +70,7 @@ while cap.isOpened():
                 })
     
     # Rysowanie wykryć na klatce
+    cv2.normalize(frame, frame, 0, brightness, cv2.NORM_MINMAX)
     draw_detections(frame, detections)
     
     # Konwersja koloru z BGR (OpenCV) na RGB
