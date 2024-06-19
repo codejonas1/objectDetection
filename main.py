@@ -8,6 +8,8 @@ if len(sys.argv) == 2:
     brightness = 255
 elif len(sys.argv) == 3:
     video = sys.argv[1]
+    brightness = 255
+
     if sys.argv[2] == "bright":
         brightness = 400
     elif sys.argv[2] == "normal":
@@ -15,7 +17,7 @@ elif len(sys.argv) == 3:
     elif sys.argv[2] == "dark":
         brightness = 150
 else:
-    video = "video.avi"
+    video = "rowerzysci.mp4"
     brightness = 255
 
 # Załaduj model YOLOv8
@@ -48,6 +50,7 @@ classes = ['car', 'person', 'truck', 'bicycle', 'bus']
 while cap.isOpened():
     ret, frame = cap.read()
     frame = cv2.resize(frame, (960, 540))
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     if not ret:
         break
       
